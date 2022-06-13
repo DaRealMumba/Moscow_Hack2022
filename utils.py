@@ -1,7 +1,4 @@
-#TODO: написать функцию в колабе
 
-
-#Это все нужно установить в виртуальное окружение или просто блять как нибудь
 #!pip install transformers[sentencepiece]
 #!pip install transformers
 #!pip install -U sentence-transformers
@@ -32,12 +29,12 @@ import re
 
 def get_results(sequence_to_classify, date_news=None):
 
-  df_news = pd.read_csv('/Users/Muminsho/Desktop/DS/Hakaton/MoscowHack/bot_try/df_news.csv', parse_dates=['Дата']) #вставьте свой путь
+  df_news = pd.read_csv('df_news.csv', parse_dates=['Дата']) #вставьте свой путь
 
   #загружаем модель для эмбедингов
   model = SentenceTransformer('distiluse-base-multilingual-cased-v1')
   #эмбединги новостей
-  sentence_embeddings = np.load("/Users/Muminsho/Desktop/DS/Hakaton/MoscowHack/bot_try/embeddings/embeddings.npy")
+  sentence_embeddings = np.load("/Users/Muminsho/Desktop/Moscow_Hack2022-main/embeddings/embeddings.npy")
   #подрубаем фаисс
   d = sentence_embeddings.shape[1]
   index = faiss.IndexFlatL2(d)
@@ -72,6 +69,7 @@ def get_results(sequence_to_classify, date_news=None):
 
   candidate_labels = df_news['Заголовок_и_текст'].iloc[candidate_indexs].to_list()
   url = df_news['Ссылки'].iloc[candidate_indexs]
+  print(candidate_labels)
 
 
 
@@ -82,7 +80,7 @@ def get_results(sequence_to_classify, date_news=None):
       result = classifier(candidate_labels[candidat], [sequence_to_classify], multi_label = True)
       result_l.append(result['labels'][0])
       result_s.append(result['scores'][0])
-    
+      #print(result_s)
       # Лейблирование
     #   if result['scores'][0] > 0.9:
     #       result_sum.append('Подтверждено')
@@ -93,13 +91,15 @@ def get_results(sequence_to_classify, date_news=None):
 
       if result['scores'][0] > 0.8:
           result_sum.append('Подтверждено')
+          #print(result_sum)
           return [result_sum, result_s, url]
       elif result['scores'][0] < 0.2:
           result_sum.append('Фейк')
           return [result_sum, result_s, url]
       else:
           result_sum.append('Не найдено похожих новостей')
-          return [result_sum, result_s, '-']
+          return [result_sum, result_s, '-']    
+  #print(result_sum)
 
 
 
