@@ -12,9 +12,6 @@
 #!pip install faiss-cpu --no-cache
 
 
-
-#ПРОПИШИТЕ ПУТИ КО ВСЕМ ФАЙЛАМ ОТСЮДА САМИ БРАТЬЯ И СЕСТРА
-
 from transformers import pipeline
 import pandas as pd
 import numpy as np
@@ -35,23 +32,7 @@ import re
 
 def get_results(sequence_to_classify, date_news=None):
 
-  #переделываем даты
   df_news = pd.read_csv('/Users/Muminsho/Desktop/DS/Hakaton/MoscowHack/bot_try/df_news.csv', parse_dates=['Дата']) #вставьте свой путь
-#   df_news['Заголовок_и_текст'] = df_news['Заголовок'] + '. \n' + df_news['Текст'] 
-#   df_news['Дата'] = df_news['Дата'].apply(lambda x: x[:-7])
-#   df_news['Дата'] = df_news['Дата'].apply(lambda x: re.sub(' января ', '/01/', x))
-#   df_news['Дата'] = df_news['Дата'].apply(lambda x: re.sub(' февраля ', '/02/', x))
-#   df_news['Дата'] = df_news['Дата'].apply(lambda x: re.sub(' марта ', '/03/', x))
-#   df_news['Дата'] = df_news['Дата'].apply(lambda x: re.sub(' апреля ', '/04/', x))
-#   df_news['Дата'] = df_news['Дата'].apply(lambda x: re.sub(' мая ', '/05/', x))
-#   df_news['Дата'] = df_news['Дата'].apply(lambda x: re.sub(' июня ', '/06/', x))
-#   df_news['Дата'] = df_news['Дата'].apply(lambda x: re.sub(' июля ', '/07/', x))
-#   df_news['Дата'] = df_news['Дата'].apply(lambda x: re.sub(' августа ', '/08/', x))
-#   df_news['Дата'] = df_news['Дата'].apply(lambda x: re.sub(' сентября ', '/09/', x))
-#   df_news['Дата'] = df_news['Дата'].apply(lambda x: re.sub(' октября ', '/10/', x))
-#   df_news['Дата'] = df_news['Дата'].apply(lambda x: re.sub(' ноября ', '/11/', x))
-#   df_news['Дата'] = df_news['Дата'].apply(lambda x: re.sub(' декабря ', '/12/', x))
-#   df_news['Дата'] = pd.to_datetime(df_news['Дата'])
 
   #загружаем модель для эмбедингов
   model = SentenceTransformer('distiluse-base-multilingual-cased-v1')
@@ -89,7 +70,6 @@ def get_results(sequence_to_classify, date_news=None):
                       model="joeddav/xlm-roberta-large-xnli")
   
 
-  #дальше пиздец какой-то, но не я писал
   candidate_labels = df_news['Заголовок_и_текст'].iloc[candidate_indexs].to_list()
   url = df_news['Ссылки'].iloc[candidate_indexs]
 

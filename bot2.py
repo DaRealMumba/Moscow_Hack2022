@@ -3,8 +3,6 @@ This is a echo bot.
 It echoes any incoming text messages.
 """
 
-#я кидаю виртуальное окружение вместе с кодом, но вам лучше отдельно установить все чего не хватает
- 
 import logging
 from datetime import datetime as dt
 import pandas as pd
